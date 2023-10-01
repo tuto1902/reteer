@@ -21,10 +21,11 @@ it('returns 200 on GET request for authenticated user @ tasks.store', function (
                 }),
         )
         ->create();
-    $task = Task::factory()->create();
+    $task = Task::factory()->make();
 
     // Act & Assert
     $this->actingAs($user)
-        ->get(route('tasks.store', ['user' => $user]))
-        ->assertOk();
+        ->withoutExceptionHandling()
+        ->post(route('tasks.store', ['user' => $user]))
+        ->assertRedirectToRoute('tasks.confirmCreate');
 });
